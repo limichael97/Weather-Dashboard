@@ -1,5 +1,7 @@
 var userFormEl = document.querySelector("#user-form");
-var cityValue = document.querySelector("#city")
+var cityValue = document.querySelector("#city");
+var weatherCurrent =document.querySelector("#currentWeather");
+var titleCity = document.querySelector("#weatherCity")
 
 var getCity = function(event) {
     event.preventDefault();
@@ -21,8 +23,8 @@ var getWeatherData = function(city) {
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
-                console.log(data.main.temp);
-               displayWeather(data.main.temp);     
+                console.log(data);
+               displayCurrentWeather(data.main.temp, city, data.main.humidity, data.wind.speed);     
             });
         } else {
             alert("Error");
@@ -30,11 +32,18 @@ var getWeatherData = function(city) {
     });
 };
 
-var displayWeather = function(temp) {
+var displayCurrentWeather = function(temp, location, humidity, windSpeed) {
     console.log("temp");
+    titleCity.textContent = location;
+
+    
+
+
+
 }
 
 userFormEl.addEventListener("submit", getCity);
 
 
 // dynamically add city name, date, wind, humidity, uv index in div and
+//uv index from different api call

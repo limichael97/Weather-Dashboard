@@ -10,19 +10,19 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Weather API</title>
 </head>
-<body>
+<body class=" d-flex flex-column min-100-vh">
     <header class ="jumbotron p-3 mb-2 bg-primary text-white text-center">
         <h1 class ="app-title "> Weather Dashboard</h1>
     </header>
 
-    <main class="flex-row justify-space-between">
-        <div class="col-12 col-md-4">
+    <main class="d-flex flex-row justify-space-around">
+        <div class="col-12 col-md-4 m-3 ">
             <div class ="card">
                 <h3 class="card-header text-uppercase">Search for a City</h3>
                 <form id="user-form" class="card-body">
                     <label class="form-label" for="city">City</label>
-                    <input name="city" id="city" type="text" autofocus="true" class="form-input" />
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <input name="city" id="city" type="text" autofocus="true" class="form-input m-1" />
+                    <button type="submit" class="btn btn-primary m-2">Search</button>
                 </form>
             </div>
 
@@ -31,8 +31,9 @@
             </div>
         </div>
 
-        <div>
-            <div>
+        <div class="col-12 col-md-8 m-3 ">
+            <div id ="currentWeather">
+                <h2 id = "weatherCity" class="subtitle border"> </h2>
 
             </div>
 
