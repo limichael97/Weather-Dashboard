@@ -15,25 +15,41 @@ var twoDayForward = moment().add(2, 'day')
 var threeDayForward = moment().add(3, 'day')
 var fourDayForward = moment().add(4, 'day')
 var fiveDayForward = moment().add(5, 'day')
+
+
 var date1 = oneDayForward.format('M/D/YYYY'); 
 var date2 = twoDayForward.format('M/D/YYYY'); 
 var date3 = threeDayForward.format('M/D/YYYY'); 
 var date4 = fourDayForward.format('M/D/YYYY'); 
-var date5 = fourDayForward.format('M/D/YYYY'); 
+var date5 = fiveDayForward.format('M/D/YYYY'); 
 var prevCity = document.getElementById("newBtns")
 
 var arrayDates = [date1, date2, date3, date4, date5];
 
 var saveData =[];
-var saveFutData = [];
+var fetchData = JSON.parse(localStorage.getItem("nameCity"));
+console.log(fetchData);
+if (fetchData ) {
+    saveData= fetchData
+}
+console.log(saveData)
 
+var updateDiv = function() {
+    $( "#newBtns" ).load(window.location.href + " #newBtns" );
+}
 
 var getCity = function(event) {
     event.preventDefault();
 
+
     var cityInput = cityValue.value.trim();
+    saveData.push(cityInput)
+
+    localStorage.setItem("nameCity", JSON.stringify(saveData))
     if (cityInput) {
         getCoord(cityInput);
+        updateDiv()
+        
 
         cityValue.value="";
         cityName = cityInput;
@@ -41,10 +57,15 @@ var getCity = function(event) {
     } else {
         alert("Please enter a city");
     }
+
+    
+
+    
 };
 
 var getCoord = function(city) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=f67d51a12eea7f50c464b5f88467b045";
+    cityName = city
 
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
@@ -89,10 +110,11 @@ var displayData = function(temp, humidity, windSpeed, uvi) {
         currentUVI.classList = "text-danger"
     }
 
-    saveCity(cityName, temp, windSpeed, humidity, uvi)
+    saveCity(cityName)
 };
 
 var displayForecast = function(daily) {
+    document.getElementById("forecast").innerHTML = ""
     console.log(daily)
     for (i=0; i< daily.length - 3; i++) {
         var oneFuture = document.createElement("div");
@@ -127,78 +149,78 @@ var displayForecast = function(daily) {
         oneFuture.appendChild(oneHumidity);
         futureForecast.appendChild(oneFuture);
 
-        
+    
     }
-    previousCityBtn()
-    saveForecast(daily)
 }
 
 var previousCityBtn = function() {
-    var createPrevCity = document.createElement("btn");
-    createPrevCity.textContent = cityName;
-    createPrevCity.setAttribute("type", "submit")
-    createPrevCity.classList= "mt-3 btn btn-secondary d-flex justify-content-center"
+    for (i=0; i< saveData.length; i++) {
+        var createPrevCity = document.createElement("btn");
 
-    for (i=0; i<saveData.length; i++) {
+        createPrevCity.textContent = saveData[i];
+        createPrevCity.setAttribute("type", "submit")
+        createPrevCity.classList= "mt-3 btn btn-secondary d-flex justify-content-center"
+
         
-        createPrevCity.setAttribute("id", i)
+        createPrevCity.setAttribute("id", saveData[i])
+        
+
+        createPrevCity.addEventListener("click", function(e) {
+            if (e.target.tagName.toLowerCase() === 'btn') {
+                console.log(e.target.id)
+                getCoord(e.target.id)
+            
+
+                //pullCurrentWeather(isolatedBtn)
+            } else {
+                console.log("button")
+            }
+        });
+        prevCity.appendChild(createPrevCity);
     }
-
-    document.querySelector('body').addEventListener("click", function(e) {
-        if (e.target.tagName.toLowerCase() === 'btn') {
-            saveData = JSON.parse(localStorage.getItem("current weather"))
-            var isolatedBtn = saveData[e.target.id]
-            console.log
-
-            pullCurrentWeather(isolatedBtn)
-        } else {
-            console.log("button")
-        }
-    });
-    prevCity.appendChild(createPrevCity);
+    
     
 }
 
 
-var saveCity = function(city, temperature, wind, humidity, uvi) {
+var saveCity = function(city) {
     var previousData = {
         NameCity: city,
-        currentTemp: temperature,
-        currentWind: wind,
-        humidityCurrent: humidity,
-        uviCurrent: uvi
     }
     console.log(previousData)
 
-    saveData.push(previousData)
+    // saveData.push(previousData)
     localStorage.setItem("current weather", JSON.stringify(saveData))
     
 }
 
-var saveForecast = function(daily) {
-    for (i=0; i<5; i++) {
-        var previousForecast = {
-            futureTemp: daily[i].temp.max,
-        }
+var saveForecast = function(date, icons, temp, wind, humidity) {
+    varPreviousForecast = {
+        dateFuture: date,
+        iconsFuture: icons,
+        tempFuture: temp,
+        windFuture: wind,
+        humidityFuture: humidity
     }
-    console.log(previousForecast)
+
     
+    saveFutData.push(varPreviousForecast)
+    localStorage.setItem("future weather", JSON.stringify(saveFutData))
+
     
 
 }
 
-var pullCurrentWeather = function(data) {
-    saveData = JSON.parse(localStorage.getItem("current weather"))
-    console.log(data)
-    cityName = data.NameCity
+// var pullCurrentWeather = function(data) {
+//     saveData = JSON.parse(localStorage.getItem("current weather"))
+//     console.log(data)
+//     cityName = data.NameCity
 
-    displayData(data.currentTemp, data.humidityCurrent, data.currentWind, data.uviCurrent)
+//     // displayData()
     
-}
+// } 
 
-var displayPrevWeather = function() {
-    
-}
+previousCityBtn()
 
 userFormEl.addEventListener("submit", getCity);
 
