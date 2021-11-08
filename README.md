@@ -1,5 +1,6 @@
 # Weather-Dashboard
 
+![image](https://user-images.githubusercontent.com/90745029/140667718-c036f1bc-4fe8-41ac-9123-70a3b555097d.png)
 
 
 ## Purpose
