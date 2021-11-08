@@ -9,3 +9,7 @@
 .blue {
     color: turquoise;
 }
+
+.flexw {
+    flex-wrap: wrap;
+}

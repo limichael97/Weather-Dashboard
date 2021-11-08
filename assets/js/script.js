@@ -23,6 +23,7 @@ var prevCity = document.getElementById("newBtns")
 var arrayDates = [date1, date2, date3, date4, date5];
 var saveData =[];
 
+// get localstorage if there are any cities saved
 var fetchData = JSON.parse(localStorage.getItem("nameCity"));
 console.log(fetchData);
 
@@ -31,14 +32,19 @@ if (fetchData ) {
 }
 console.log(saveData)
 
+/* 
+When "Search" button is clicked, eventhandler will call this 'getCity' function which
+gets the value from the input, stores in localstorage, and passes the "cityInput" to two 
+functions, 'getCoord' and 'previousCityBtn'
+*/
 var getCity = function(event) {
     event.preventDefault();
 
     var cityInput = cityValue.value.trim();
     saveData.push(cityInput)
 
-    localStorage.setItem("nameCity", JSON.stringify(saveData))
     if (cityInput) {
+        localStorage.setItem("nameCity", JSON.stringify(saveData))
         getCoord(cityInput);
         lastElement = saveData.slice(-1);
         previousCityBtn()
@@ -48,9 +54,12 @@ var getCity = function(event) {
     } else {
         alert("Please enter a city");
     }
-    
 };
 
+/*
+The openweather api is used here to get the coordinates of the inputted city which
+is then passed to the 'getData' function.
+*/
 var getCoord = function(city) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=f67d51a12eea7f50c464b5f88467b045";
     cityName = city
@@ -66,6 +75,9 @@ var getCoord = function(city) {
     });
 };
 
+/*
+Coordinates are used in this 'One Call Openweather' API to get all data. 
+*/
 var getData = function(lat, lon) {
     var dataApiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=&units=imperial&appid=f67d51a12eea7f50c464b5f88467b045";
 
@@ -82,6 +94,7 @@ var getData = function(lat, lon) {
     });
 };
 
+// This function displays the current temp, humidity, wind, and uvi of city onto the page
 var displayData = function(temp, humidity, windSpeed, uvi) {
     currentCityTitle.textContent = "Current City: " + cityName + " (" + moment().format("M/D/YYYY") +")";
     temperature.textContent = "Temp: " + temp + "°F";
@@ -99,12 +112,13 @@ var displayData = function(temp, humidity, windSpeed, uvi) {
     }
 };
 
+// This function displays forecast for the next 5 days of the city onto the page
 var displayForecast = function(daily) {
     document.getElementById("forecast").innerHTML = ""
     console.log(daily)
     for (i=0; i< daily.length - 3; i++) {
         var oneFuture = document.createElement("div");
-        oneFuture.classList = "bg-dark text-white mr-3 p-2 d-flex flex-column";
+        oneFuture.classList = "bg-dark text-white mr-3 p-2 d-flex flex-column mb-3";
         var date = document.createElement("h4");
         var oneTemp = document.createElement("span");
         var oneWind = document.createElement("span");
@@ -140,6 +154,7 @@ var displayForecast = function(daily) {
     }
 }
 
+// creates button for past cities and targets their id when clicked (more intended to load btns on page, when website opens)
 var storageDataCity = function() {
     for (i = 0; i < saveData.length; i++) {
         var createPrevCity = document.createElement("btn");
@@ -156,11 +171,10 @@ var storageDataCity = function() {
             }
         });
         prevCity.appendChild(createPrevCity);
-
     }
-
 }
 
+// creates button for past cities, targets their id when clicked and displays the data for that city
 var previousCityBtn = function() {
     if ( saveData.length === 0) {
         console.log("no button")      

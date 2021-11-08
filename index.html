@@ -12,14 +12,15 @@
     <title>Weather API</title>
 </head>
 <body class=" d-flex flex-column min-100-vh">
-    <header class ="jumbotron p-3 mb-2 bg-primary text-white text-center">
+    <header class ="jumbotron p-3 mb-2 bg-primary text-white text-center col-12 w-100">
         <h1 class ="app-title "> Weather Dashboard</h1>
     </header>
 
-    <main class="d-flex flex-row justify-space-around">
-        <div class="col-12 col-md-4 m-3 " id ="replace">
+    <main class="d-flex flex-row justify-space-around col-12">
+        <div class="d-flex flex-column col col-md-4 m-3 " id ="replace">
             <div class ="card">
                 <h3 class="card-header text-uppercase">Search for a City</h3>
+                <!--Form to capture inputted cities-->
                 <form id="user-form" class="card-body">
                     <label class="form-label" for="city">City</label>
                     <input name="city" id="city" type="text" autofocus="true" class="form-input m-1" />
@@ -27,13 +28,14 @@
                 </form>
             </div>
 
+            <!--Buttons for past cities are dynamically made here-->
             <div id = "newBtns">
 
             </div>
         </div>
         
-
-        <div class="col-12 col-md-8 m-3 ">
+        <!--Current data are appended here-->
+        <div class="col col-md-8 m-3 ">
             <div id ="currentWeather" class="border mb-3">
                 <h2 id = "weatherCity" class="subtitle">Current City:  </h2>
                 <p id ="tempNow"> Temp: </p>
@@ -43,18 +45,14 @@
 
             </div>
 
+            <!--5 day forecast are appended here-->
             <div class="mt-3">
                 <h3 class = "mt-3"> 5-Day Forecast </h3>
-                <div class = "d-flex flex-row" id ="forecast">
+                <div class = "d-flex flex-row flexw" id ="forecast">
 
                 </div>
             </div>
         </div>
-
-
-
-
-
     </main>
 
 
@@ -68,22 +66,3 @@
 
 
 
-
-<!--  <div id = "futureOne" class = "m-3"> 
-</div>
-
-<div id = "futureTwo" class = "m-3"> 
-    
-</div>
-
-<div id = "futureThree" class = "m-3"> 
-    
-</div>
-
-<div id = "futureFour" class = "m-3"> 
-    
-</div>
-
-<div id = "futureFive" class = "m-3"> 
-    
-</div> -->
